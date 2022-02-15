@@ -1,0 +1,66 @@
+import React, { useRef, useState, useCallback } from 'react';
+import { Grid, Paper, TextField, Button} from '@material-ui/core';
+import { Alert, Snackbar } from '@mui/material'
+
+export default function Opencart() {
+
+
+  const [textValue, setTextValue] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const [type, setType] = React.useState(null);
+  const [message, setMessage] = React.useState(null);
+  const handleClose = (event, reason) => {
+    setOpen(false);
+};
+   const onTextChange = (e ) => setTextValue(e.target.value);
+  const handleSubmit = useCallback(() => {
+    const fieldKey = keyRef.current.value
+    const fieldDomi = domiRef.current.value
+    const fieldAdm = admRef.current.value
+    console.log(keyRef.current.value)
+    if(!fieldKey || !fieldDomi || !fieldAdm){
+      setMessage("Verifique se os campos estão preenchidos!")
+      setType("error")
+      setOpen(true)
+    return 
+    }
+    setMessage("Enviado com sucesso")
+    setType("success")
+    setOpen(true)
+  },[]);
+      
+    
+ 
+ const keyRef = useRef(null)
+ const domiRef = useRef(null)
+ const admRef = useRef(null)
+
+  const paperStyle={padding :20,height:'70vh',width:500, margin:"20px auto"}
+  const btnstyle={margin:'8px 0'}
+  return (
+    <Grid>
+ <Paper elevation={10} style={paperStyle}>
+                <Grid align='center'>
+                    <h2>Integração Opencart</h2>
+                </Grid>
+                <TextField 
+                inputRef={keyRef}
+                label='API Key da Seller' placeholder='Insira a API Key da Seller ' fullWidth required/>
+                <TextField 
+               inputRef={domiRef}
+                label='Domínio da Loja' placeholder='Exemplo (Domínio com http:// )' fullWidth required/>
+                <TextField 
+               inputRef={admRef}
+                label='Admin ID REST' placeholder='Insira o admin ID REST da Loja Opencart (Secret Key) ' type='password' fullWidth />
+
+                <Button onClick={handleSubmit} type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Enviar</Button>
+
+                </Paper>
+                <Snackbar open={open} autoHideDuration={10000} anchorOrigin={{  vertical: 'top', horizontal: 'center', }} onClose={handleClose}>
+                    <Alert severity={type} sx={{ width: '100%' }}>
+                       {message}
+                    </Alert>
+                </Snackbar>
+    </Grid>
+  )
+}
